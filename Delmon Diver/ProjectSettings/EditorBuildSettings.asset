@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/IntroStory.unity
+    guid: dae4f64794ebd8e4b818e8b6387dddc7
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 5f4a1be2e27cd914ca3abad9a6ab7a3f
+  - enabled: 1
     path: Assets/Scenes/L1_BrokenBoat.unity
     guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects:
