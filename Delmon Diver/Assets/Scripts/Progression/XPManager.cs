@@ -2,15 +2,44 @@ using UnityEngine;
 
 public class XPManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private LevelProgression levelProgression;
+
+    public int CurrentXP { get; private set; }
+
+    public event System.Action<int> OnXPChanged;
+
+    private void Awake()
     {
-        
+        if (levelProgression == null)
+        {
+            levelProgression = GetComponent<LevelProgression>();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Initialize(int savedXP)
     {
-        
+        CurrentXP = Mathf.Max(0, savedXP);
+        OnXPChanged?.Invoke(CurrentXP);
+
+        if (levelProgression != null)
+        {
+            levelProgression.UpdateLevelFromXP(CurrentXP);
+        }
+    }
+
+    public void AddXP(int amount)
+    {
+        if (amount <= 0)
+        {
+            return;
+        }
+
+        CurrentXP += amount;
+        OnXPChanged?.Invoke(CurrentXP);
+
+        if (levelProgression != null)
+        {
+            levelProgression.UpdateLevelFromXP(CurrentXP);
+        }
     }
 }
