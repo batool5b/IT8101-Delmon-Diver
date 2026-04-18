@@ -19,7 +19,6 @@ public class LoadMainMenu : MonoBehaviour
     void OnTimelineFinished(PlayableDirector pd)
     {
         SceneManager.LoadScene(nextScene);
-        //Invoke("LoadNext", 1f);
     }
 
     void LoadNext()
