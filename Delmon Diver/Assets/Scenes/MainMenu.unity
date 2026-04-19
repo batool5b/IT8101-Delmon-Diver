@@ -1341,7 +1341,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ScrollRect
   m_Content: {fileID: 2119729130}
-  m_Horizontal: 1
+  m_Horizontal: 0
   m_Vertical: 1
   m_MovementType: 1
   m_Elasticity: 0.1
@@ -4417,7 +4417,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.72735596, y: 836.9302}
+  m_AnchoredPosition: {x: 8.923492, y: 836.9302}
   m_SizeDelta: {x: 511.39, y: 319.48}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2023549084
@@ -5328,8 +5328,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.0000079266, y: -0}
-  m_SizeDelta: {x: -11.5917, y: 1993.3403}
+  m_AnchoredPosition: {x: -16.3922, y: -0}
+  m_SizeDelta: {x: 4.8006, y: 1993.3403}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &2129129012
 GameObject:
