@@ -8,7 +8,7 @@ public class Level1SequenceManager : MonoBehaviour
     public bool cabinDoorBroken = false;
     public bool hasBackpack = false;
     
-    [Header("UI References (Optional)")]
+    // [Header("UI References (Optional)")]
     // E.g., a simple text element to update the player's current goal
     // public Text objectiveText;
 
