@@ -47,7 +47,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene("L1_BrokenBoat");
+        SceneManager.LoadScene("L1_Map");
     }
     
     public void OpenControl()
