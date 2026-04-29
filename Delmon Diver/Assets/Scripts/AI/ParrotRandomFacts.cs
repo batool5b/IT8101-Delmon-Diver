@@ -13,7 +13,7 @@ public class ParrotRandomFacts : MonoBehaviour
     public AudioClip parrotSound;
 
     //distance
-    public float farDistance = 8f; //when player is far
+    public float farDistance = 7f; //when player is far
     public float closeDistance = 5f; //when player is close again
 
     //last indexes
