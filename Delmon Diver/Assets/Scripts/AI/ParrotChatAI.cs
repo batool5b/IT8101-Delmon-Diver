@@ -1,5 +1,6 @@
 using UnityEngine;
 
+/*
 public class ParrotChatAI : MonoBehaviour
 {
     public Transform player; //player reference
@@ -15,6 +16,25 @@ public class ParrotChatAI : MonoBehaviour
         if (distance <= chatRange && Input.GetKeyDown(chatKey))
         {
             Debug.Log("AI Chat opens"); //ui will be implemented later
+        }
+    }
+}*/
+using UnityEngine.InputSystem;
+
+public class ParrotChatAI : MonoBehaviour
+{
+    public Transform player;
+    public float chatRange = 3f;
+
+    void Update()
+    {
+        if (player == null) return;
+
+        float distance = Vector3.Distance(transform.position, player.position);
+
+        if (distance <= chatRange && Keyboard.current.eKey.wasPressedThisFrame)
+        {
+            Debug.Log("Open Neocortex + Ollama chat here.");
         }
     }
 }
