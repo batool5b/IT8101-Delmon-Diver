@@ -51,7 +51,7 @@ public class SettingsPanel : MonoBehaviour
 
     public void reset()
     {
-        musicSlider.value = PlayerPrefs.GetFloat("MusicVolume", 1f);
-        sfxSlider.value = PlayerPrefs.GetFloat("SFXVolume", 1f);
+        musicSlider.value = 0f;
+        sfxSlider.value = 0f;
     }
 }
