@@ -119,6 +119,56 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &219225289
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 219225291}
+  - component: {fileID: 219225290}
+  m_Layer: 0
+  m_Name: LoadingManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &219225290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 219225289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd991fd251bfe7d48a5f4bb21b305515, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  progressBar: {fileID: 626949569}
+  loadingText: {fileID: 542511262}
+  tipText: {fileID: 497481008}
+  fakeLoadTime: 3
+  sceneToLoad: L1_BrokenBoat
+  tipChangeInterval: 1
+--- !u!4 &219225291
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 219225289}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &384049319
 GameObject:
   m_ObjectHideFlags: 0
@@ -242,7 +292,7 @@ GameObject:
   - component: {fileID: 497481009}
   - component: {fileID: 497481008}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TipText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -264,8 +314,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 160.53589, y: -145.75046}
-  m_SizeDelta: {x: 545.072, y: 41.0052}
+  m_AnchoredPosition: {x: 145.06313, y: -165.27272}
+  m_SizeDelta: {x: 514.1265, y: 42.3506}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &497481008
 MonoBehaviour:
@@ -287,7 +337,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: The Diver
+  m_text: 'tip: '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2869dfdcbc7a143498acecb9f293a910, type: 2}
   m_sharedMaterial: {fileID: 7133661813774871600, guid: 2869dfdcbc7a143498acecb9f293a910, type: 2}
@@ -296,8 +346,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4290827763
-  m_fontColor: {r: 0.9547169, g: 0.83528364, b: 0.75476676, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -314,8 +364,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 12
+  m_fontSizeBase: 12
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -400,7 +450,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 165, y: 12.340027}
+  m_AnchoredPosition: {x: 165, y: 15.799988}
   m_SizeDelta: {x: -724, y: 33.7764}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &542511262
@@ -450,8 +500,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16
-  m_fontSizeBase: 16
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -488,7 +538,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -184.73953, y: 0, z: -195.22202, w: 0}
+  m_margin: {x: -178.01227, y: 0, z: -138.04025, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1410,3 +1460,4 @@ SceneRoots:
   - {fileID: 814348639}
   - {fileID: 1838081128}
   - {fileID: 1831358317}
+  - {fileID: 219225291}
