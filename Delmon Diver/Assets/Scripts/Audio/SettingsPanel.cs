@@ -8,6 +8,9 @@ public class SettingsPanel : MonoBehaviour
     public Slider musicSlider;
     public Slider sfxSlider;
 
+    public Toggle musicToggle; 
+    public Toggle sfxToggle;   
+
     private void OnEnable()
     {
         // Load saved values first
@@ -53,5 +56,8 @@ public class SettingsPanel : MonoBehaviour
     {
         musicSlider.value = 0f;
         sfxSlider.value = 0f;
+
+        musicToggle.isOn = false; 
+        sfxToggle.isOn = false;
     }
 }
