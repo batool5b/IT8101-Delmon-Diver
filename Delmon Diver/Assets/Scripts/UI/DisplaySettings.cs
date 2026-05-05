@@ -18,6 +18,7 @@ public class DisplaySettings : MonoBehaviour
     {
         AllResolutions = Screen.resolutions;
 
+        SelectedResolutionList.Clear();
         List<string> resolutionStringList = new List<string>();
         string newRes;
         foreach (Resolution res in AllResolutions)
@@ -30,28 +31,28 @@ public class DisplaySettings : MonoBehaviour
             }
         }
 
+        ResDropDown.ClearOptions();
         ResDropDown.AddOptions(resolutionStringList);
-
-        // Load saved values after populating dropdown
         LoadSettings();
     }
 
     public void changeResolution()
     {
+        if (SelectedResolutionList == null || SelectedResolutionList.Count == 0) return;
+
         SelectedResolution = ResDropDown.value;
         Screen.SetResolution(SelectedResolutionList[SelectedResolution].width, SelectedResolutionList[SelectedResolution].height, isFullScreen);
         SaveSettings();
     }
 
-public void ChangeFullScreen()
-{
-    // Guard against being called before list is populated
-    if (SelectedResolutionList == null || SelectedResolutionList.Count == 0) return;
+    public void ChangeFullScreen()
+    {
+        if (SelectedResolutionList == null || SelectedResolutionList.Count == 0) return;
 
-    isFullScreen = FullScreenToggle.isOn;
-    Screen.SetResolution(SelectedResolutionList[SelectedResolution].width, SelectedResolutionList[SelectedResolution].height, isFullScreen);
-    SaveSettings();
-}
+        isFullScreen = FullScreenToggle.isOn;
+        Screen.SetResolution(SelectedResolutionList[SelectedResolution].width, SelectedResolutionList[SelectedResolution].height, isFullScreen);
+        SaveSettings();
+    }
 
     private void SaveSettings()
     {
@@ -62,16 +63,13 @@ public void ChangeFullScreen()
 
     private void LoadSettings()
     {
-        // Load fullscreen
         isFullScreen = PlayerPrefs.GetInt("FullScreen", 1) == 1;
-        FullScreenToggle.isOn = isFullScreen;
+        FullScreenToggle.SetIsOnWithoutNotify(isFullScreen);
 
-        // Load resolution
-        SelectedResolution = PlayerPrefs.GetInt("Resolution", SelectedResolutionList.Count - 1); // default to highest
-        ResDropDown.value = SelectedResolution;
+        SelectedResolution = PlayerPrefs.GetInt("Resolution", SelectedResolutionList.Count - 1);
+        ResDropDown.SetValueWithoutNotify(SelectedResolution);
         ResDropDown.RefreshShownValue();
 
-        // Apply loaded settings
         Screen.SetResolution(SelectedResolutionList[SelectedResolution].width, SelectedResolutionList[SelectedResolution].height, isFullScreen);
     }
 }

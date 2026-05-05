@@ -56,17 +56,20 @@ public class SettingsPanel : MonoBehaviour
         SaveVolume(); // save on every change
     }
 
-    public void SaveVolume()
-    {
-        // Save slider values directly instead of reading from mixer
+public void SaveVolume()
+{
+    // Only save slider value if not muted, otherwise keep the last saved value
+    if (!musicToggle.isOn)
         PlayerPrefs.SetFloat("MusicVolume", musicSlider.value);
+
+    if (!sfxToggle.isOn)
         PlayerPrefs.SetFloat("SFXVolume", sfxSlider.value);
 
-        PlayerPrefs.SetInt("MusicMuted", musicToggle.isOn ? 1 : 0);
-        PlayerPrefs.SetInt("SFXMuted", sfxToggle.isOn ? 1 : 0);
+    PlayerPrefs.SetInt("MusicMuted", musicToggle.isOn ? 1 : 0);
+    PlayerPrefs.SetInt("SFXMuted", sfxToggle.isOn ? 1 : 0);
 
-        PlayerPrefs.Save();
-    }
+    PlayerPrefs.Save();
+}
 
     public void reset()
     {

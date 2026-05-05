@@ -6,17 +6,17 @@ public class ToggleVisibilityController : MonoBehaviour
     public Toggle toggleA;
     public Toggle toggleB;
 
-    public GameObject elementA; // shown when toggleA is on
-    public GameObject elementB; // shown when toggleB is on
+    public GameObject elementA;
+    public GameObject elementB;
 
     private void OnEnable()
     {
         toggleA.onValueChanged.AddListener(OnToggleAChanged);
         toggleB.onValueChanged.AddListener(OnToggleBChanged);
 
-        // Set initial state
-        toggleA.isOn = true;
-        toggleB.isOn = false;
+        // Use SetIsOnWithoutNotify to set initial state without triggering listeners
+        toggleA.SetIsOnWithoutNotify(true);
+        toggleB.SetIsOnWithoutNotify(false);
         elementA.SetActive(true);
         elementB.SetActive(false);
     }
@@ -29,23 +29,27 @@ public class ToggleVisibilityController : MonoBehaviour
 
     private void OnToggleAChanged(bool isOn)
     {
-        elementA.SetActive(isOn);
-
-        if (isOn)
+        if (!isOn)
         {
-            toggleB.isOn = false; // turn off the other toggle
-            elementB.SetActive(false);
+            toggleA.SetIsOnWithoutNotify(true);
+            return;
         }
+
+        toggleB.SetIsOnWithoutNotify(false);
+        elementA.SetActive(true);
+        elementB.SetActive(false);
     }
 
     private void OnToggleBChanged(bool isOn)
     {
-        elementB.SetActive(isOn);
-
-        if (isOn)
+        if (!isOn)
         {
-            toggleA.isOn = false; // turn off the other toggle
-            elementA.SetActive(false);
+            toggleB.SetIsOnWithoutNotify(true);
+            return;
         }
+
+        toggleA.SetIsOnWithoutNotify(false);
+        elementA.SetActive(false);
+        elementB.SetActive(true);
     }
 }

@@ -8,20 +8,21 @@ public class SliderToggleController : MonoBehaviour
 
     private float _previousValue;
 
-    void Start()
+    void Awake() // Awake ensures listener is ready before any Start() fires
     {
+        _previousValue = slider.value;
         toggle.onValueChanged.AddListener(OnToggleChanged);
     }
 
     private void OnToggleChanged(bool isOn)
     {
-        if (isOn) // Toggle is ON → lock slider
+        if (isOn) // Toggle ON → mute slider
         {
             _previousValue = slider.value;
-            slider.value = -80;
-            slider.interactable = false;    // blocks interaction
+            slider.value = -80f;
+            slider.interactable = false;
         }
-        else // Toggle is OFF → restore slider
+        else // Toggle OFF → restore slider
         {
             slider.interactable = true;
             slider.value = _previousValue;
