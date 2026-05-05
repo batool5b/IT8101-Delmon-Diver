@@ -18,7 +18,7 @@ public class SliderToggleController : MonoBehaviour
         if (isOn) // Toggle is ON → lock slider
         {
             _previousValue = slider.value;
-            slider.value = -80f;
+            slider.value = -80;
             slider.interactable = false;    // blocks interaction
         }
         else // Toggle is OFF → restore slider
