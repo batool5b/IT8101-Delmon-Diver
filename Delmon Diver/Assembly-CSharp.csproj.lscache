@@ -68,6 +68,7 @@ Assets/Scripts/
  UI/
   AutoTextScroll.cs
   ButtonHoverUI.cs
+  Displayloader.cs
   DisplaySettings.cs
   SliderToggleController.cs
   ToggleVisibilityController.cs

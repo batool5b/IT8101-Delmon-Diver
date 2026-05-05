@@ -10,31 +10,31 @@ public class SettingsPanel : MonoBehaviour
     public Toggle musicToggle;
     public Toggle sfxToggle;
 
-private void OnEnable()
-{
-    // Load saved values
-    musicSlider.value = PlayerPrefs.GetFloat("MusicVolume", 0f);
-    sfxSlider.value = PlayerPrefs.GetFloat("SFXVolume", 0f);
+    private void OnEnable()
+    {
+        // Load saved values
+        musicSlider.value = PlayerPrefs.GetFloat("MusicVolume", 0f);
+        sfxSlider.value = PlayerPrefs.GetFloat("SFXVolume", 0f);
 
-    // Load saved toggle states
-    musicToggle.isOn = PlayerPrefs.GetInt("MusicMuted", 0) == 1;
-    sfxToggle.isOn = PlayerPrefs.GetInt("SFXMuted", 0) == 1;
+        // Load saved toggle states
+        musicToggle.isOn = PlayerPrefs.GetInt("MusicMuted", 0) == 1;
+        sfxToggle.isOn = PlayerPrefs.GetInt("SFXMuted", 0) == 1;
 
-    // Add listeners FIRST so mixer updates when invoke fires
-    musicSlider.onValueChanged.AddListener(UpdateMusicVolume);
-    sfxSlider.onValueChanged.AddListener(UpdateSoundVolume);
+        // Add listeners FIRST so mixer updates when invoke fires
+        musicSlider.onValueChanged.AddListener(UpdateMusicVolume);
+        sfxSlider.onValueChanged.AddListener(UpdateSoundVolume);
 
-    // Only invoke if muted, otherwise just apply mixer value directly
-    if (musicToggle.isOn)
-        musicToggle.onValueChanged.Invoke(true);
-    else
-        audioMixer.SetFloat("MusicVolume", musicSlider.value);
+        // Only invoke if muted, otherwise just apply mixer value directly
+        if (musicToggle.isOn)
+            musicToggle.onValueChanged.Invoke(true);
+        else
+            audioMixer.SetFloat("MusicVolume", musicSlider.value);
 
-    if (sfxToggle.isOn)
-        sfxToggle.onValueChanged.Invoke(true);
-    else
-        audioMixer.SetFloat("SFXVolume", sfxSlider.value);
-}
+        if (sfxToggle.isOn)
+            sfxToggle.onValueChanged.Invoke(true);
+        else
+            audioMixer.SetFloat("SFXVolume", sfxSlider.value);
+    }
 
     private void OnDisable()
     {
@@ -56,23 +56,23 @@ private void OnEnable()
         SaveVolume(); // save on every change
     }
 
-public void SaveVolume()
-{
-    // Save slider values directly instead of reading from mixer
-    PlayerPrefs.SetFloat("MusicVolume", musicSlider.value);
-    PlayerPrefs.SetFloat("SFXVolume", sfxSlider.value);
+    public void SaveVolume()
+    {
+        // Save slider values directly instead of reading from mixer
+        PlayerPrefs.SetFloat("MusicVolume", musicSlider.value);
+        PlayerPrefs.SetFloat("SFXVolume", sfxSlider.value);
 
-    PlayerPrefs.SetInt("MusicMuted", musicToggle.isOn ? 1 : 0);
-    PlayerPrefs.SetInt("SFXMuted", sfxToggle.isOn ? 1 : 0);
+        PlayerPrefs.SetInt("MusicMuted", musicToggle.isOn ? 1 : 0);
+        PlayerPrefs.SetInt("SFXMuted", sfxToggle.isOn ? 1 : 0);
 
-    PlayerPrefs.Save();
-}
+        PlayerPrefs.Save();
+    }
 
     public void reset()
     {
-        musicSlider.value = 0f;
-        sfxSlider.value = 0f;
         musicToggle.isOn = false;
         sfxToggle.isOn = false;
+        musicSlider.value = 0f;
+        sfxSlider.value = 0f;
     }
 }

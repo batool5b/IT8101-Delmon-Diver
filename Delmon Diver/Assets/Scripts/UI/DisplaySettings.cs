@@ -3,10 +3,8 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 
-
 public class DisplaySettings : MonoBehaviour
 {
-
     public TMP_Dropdown ResDropDown;
     public Toggle FullScreenToggle;
 
@@ -15,10 +13,9 @@ public class DisplaySettings : MonoBehaviour
     int SelectedResolution;
 
     List<Resolution> SelectedResolutionList = new List<Resolution>();
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
-        isFullScreen = true;
         AllResolutions = Screen.resolutions;
 
         List<string> resolutionStringList = new List<string>();
@@ -34,24 +31,47 @@ public class DisplaySettings : MonoBehaviour
         }
 
         ResDropDown.AddOptions(resolutionStringList);
-    }
 
+        // Load saved values after populating dropdown
+        LoadSettings();
+    }
 
     public void changeResolution()
     {
         SelectedResolution = ResDropDown.value;
         Screen.SetResolution(SelectedResolutionList[SelectedResolution].width, SelectedResolutionList[SelectedResolution].height, isFullScreen);
+        SaveSettings();
     }
 
-    public void ChangeFullScreen()
+public void ChangeFullScreen()
+{
+    // Guard against being called before list is populated
+    if (SelectedResolutionList == null || SelectedResolutionList.Count == 0) return;
+
+    isFullScreen = FullScreenToggle.isOn;
+    Screen.SetResolution(SelectedResolutionList[SelectedResolution].width, SelectedResolutionList[SelectedResolution].height, isFullScreen);
+    SaveSettings();
+}
+
+    private void SaveSettings()
     {
-        isFullScreen = FullScreenToggle.isOn;
+        PlayerPrefs.SetInt("Resolution", SelectedResolution);
+        PlayerPrefs.SetInt("FullScreen", isFullScreen ? 1 : 0);
+        PlayerPrefs.Save();
+    }
+
+    private void LoadSettings()
+    {
+        // Load fullscreen
+        isFullScreen = PlayerPrefs.GetInt("FullScreen", 1) == 1;
+        FullScreenToggle.isOn = isFullScreen;
+
+        // Load resolution
+        SelectedResolution = PlayerPrefs.GetInt("Resolution", SelectedResolutionList.Count - 1); // default to highest
+        ResDropDown.value = SelectedResolution;
+        ResDropDown.RefreshShownValue();
+
+        // Apply loaded settings
         Screen.SetResolution(SelectedResolutionList[SelectedResolution].width, SelectedResolutionList[SelectedResolution].height, isFullScreen);
-
-    }
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }
