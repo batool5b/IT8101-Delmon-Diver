@@ -12,8 +12,26 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 5f4a1be2e27cd914ca3abad9a6ab7a3f
   - enabled: 1
+    path: Assets/Scenes/L1_Map.unity
+    guid: f5a0f815aa018f74e848ec7bf1293e15
+  - enabled: 1
     path: Assets/Scenes/L1_BrokenBoat.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/L1ToL2_Map.unity
+    guid: 462d0aeb24a9dd148bc5b43a42520f4c
+  - enabled: 1
+    path: Assets/Scenes/L2_SmallIsland.unity
+    guid: 986efb93411305b4a8c58bac4ee79cc9
+  - enabled: 1
+    path: Assets/Scenes/L2ToL3_Map.unity
+    guid: b361a27fcd10b2d43a2c4cd0557a127d
+  - enabled: 1
+    path: Assets/Scenes/L3_OpenSea_ToMain.unity
+    guid: 937d0c6a9dc7ed547807ae1536b45111
+  - enabled: 1
+    path: Assets/Scenes/GameEnding.unity
+    guid: 47107f025066dc34183299403f24e9ee
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
