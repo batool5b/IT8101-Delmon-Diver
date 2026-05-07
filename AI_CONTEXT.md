@@ -127,7 +127,7 @@ IT8101-Delmon-Diver/
 The game scenes are loaded in this order (as configured in `EditorBuildSettings.asset`):
 
 ```
-IntroStory → MainMenu → L1_Map → L1_BrokenBoat → L1ToL2_Map → L2_SmallIsland
+IntroStory → MainMenu → L1_Map → L1_SunkenShip → L1ToL2_Map → L2_SmallIsland
 → L2ToL3_Map → L3_OpenSea_ToMain → GameEnding
 ```
 
@@ -138,7 +138,7 @@ IntroStory → MainMenu → L1_Map → L1_BrokenBoat → L1ToL2_Map → L2_Small
 | `IntroStory`              | Narrative intro (Timeline-driven), auto-loads MainMenu |
 | `MainMenu`                | Main menu with Start, Controls, Settings, Credits, Quit |
 | `L1_Map`                  | Map/video transition into Level 1                |
-| `L1_BrokenBoat`           | **Level 1** — Escape the sinking ship            |
+| `L1_SunkenShip`          | **Level 1** — Retrieve items from sunken wreckage |
 | `L1ToL2_Map`              | Map transition between Level 1 → 2               |
 | `L2_SmallIsland`          | **Level 2** — Small island, build a boat         |
 | `L2ToL3_Map`              | Map transition between Level 2 → 3               |
@@ -158,12 +158,15 @@ IntroStory → MainMenu → L1_Map → L1_BrokenBoat → L1ToL2_Map → L2_Small
 
 ## Level Design Summary
 
-### Level 1: The Broken Boat
-- **Setting**: Damaged ship in a storm at sea
-- **Objective**: Escape the sinking ship
-- **Difficulty**: Easy
-- **Mechanics**: Parkour/movement through debris, time pressure (ship sinking)
+### Level 1: The Sunken Ship
+- **Setting**: Bottom of the sea, around a fully sunken ship (uses LeartesStudios underwater ship asset)
+- **Intro**: A cutscene plays showing the ship being destroyed and sinking entirely
+- **Objective**: Retrieve essential items from the sunken ship wreckage and swim to the surface before drowning
+- **Difficulty**: Easy–Medium
+- **Mechanics**: Underwater swimming, oxygen/drowning pressure, item retrieval from wreckage, swimming to surface
 - **Characters**: Player (Diver)
+- **Key Constraint**: Player has limited air — must be fast and strategic about which items to grab
+- **Development Branch**: `the_ship_level1` (merged from `testShip`)
 
 ### Level 2: Small Island
 - **Setting**: Tiny island in the Persian Gulf
@@ -256,7 +259,8 @@ The team uses **per-member feature branches** that merge into integration branch
 | Branch                     | Owner/Purpose                                                    | Status       |
 |----------------------------|------------------------------------------------------------------|--------------|
 | `main`                     | Stable baseline (initial project setup)                          | Base         |
-| `testShip` ★               | **Currently checked out**. Character, movement, loading, sprites, environment detection | Active       |
+| `testShip`                 | Character, movement, loading, sprites, environment detection     | Merged → `the_ship_level1` |
+| `the_ship_level1` ★        | **Level 1 development branch**. Sunken ship environment, water shader, buoyancy, character, movement, environment detection. Merged from `testShip`. | Active       |
 | `Batool`                   | Character + movement, loading screen, sprites, ship environment  | Active       |
 | `Abbas`                    | Base only (no additional commits)                                | Inactive     |
 | `Hoor`                     | Intro story, main menu, UI                                      | Merged       |
@@ -267,7 +271,6 @@ The team uses **per-member feature branches** that merge into integration branch
 | `Fungus_Level1_Intro`      | Level 1 narrative intro using Fungus, scene renaming, map scenes | Merged       |
 | `merge_level1`             | Integration branch merging Fungus + main menu + settings + map videos | Integration |
 | `LLM_Parrot`               | LLM-based AI parrot companion scripts, chat UI                  | Feature      |
-| `the_ship_level1`          | Water shader, buoyancy system, ship scripts                     | Feature      |
 
 ### Branching Conventions
 - Personal branches are named after team members (e.g., `Batool`, `Abbas`, `Mohamed2`)
@@ -396,7 +399,7 @@ These are the MVP systems described in the Game Design Document:
 ### Sound Effects by Level
 | Level | Sound Effects |
 |-------|---------------|
-| L1    | Breaking wood, crashing ship, rushing water, captain shouts, thunder |
+| L1    | Bubbles, muffled underwater impacts, muffled groaning wood, drowning gasps (near death) |
 | L2    | Light ocean waves, soft wind, quiet ambient |
 | L3    | Strong waves, rain |
 | L4    | Birds, wind through trees, water, animal sounds |
@@ -408,7 +411,7 @@ These are the MVP systems described in the Game Design Document:
 ## Development Conventions
 
 ### File Naming
-- Scenes: `L{number}_{DescriptiveName}.unity` (e.g., `L1_BrokenBoat.unity`)
+- Scenes: `L{number}_{DescriptiveName}.unity` (e.g., `L1_SunkenShip.unity`)
 - Map transitions: `L{from}ToL{to}_Map.unity`
 - Scripts: PascalCase class names matching filenames
 
@@ -446,13 +449,13 @@ These are the MVP systems described in the Game Design Document:
 
 ## Important Notes for AI Agents
 
-1. **Currently on `testShip` branch** — This is the active working branch with character, movement, and ship environment work. The `main` branch only has the initial project setup.
+1. **Currently on `the_ship_level1` branch** — This is the active working branch for Level 1 development, containing character, movement, and the sunken ship environment (merged from `testShip`).
 
 2. **Many systems are stubs** — `LevelProgression`, `SaveLoadManager`, `XPManager`, `Player/`, `Enemies/`, `Systems/` are scaffolded but empty. Check which branch has relevant WIP work before implementing.
 
 3. **Check feature branches before implementing** — Work may already exist on a personal branch:
    - LLM/AI Parrot → `LLM_Parrot` branch
-   - Water/Buoyancy → `the_ship_level1` branch
+   - Water/Buoyancy → `the_ship_level1` branch (Active for L1)
    - Settings/Audio → `Mohamed2` branch
    - Rewards → `Abdulla` branch
 
