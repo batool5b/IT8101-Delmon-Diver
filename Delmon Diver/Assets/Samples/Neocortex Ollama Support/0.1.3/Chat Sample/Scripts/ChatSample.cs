@@ -31,12 +31,33 @@ namespace Neocortex.Samples
         private void OnChatResponseReceived(ChatResponse response)
         {
             chatPanel.AddMessage(response.message, false);
+            ApplyCustomStyling(response.message, false);
         }
 
         private void OnUserMessageSent(string message)
         {
             request.Send(message);
             chatPanel.AddMessage(message, true);
+            ApplyCustomStyling(message, true);
+        }
+
+        private void ApplyCustomStyling(string message, bool isUser)
+        {
+            // Get the last added message UI element from the chat panel
+            Transform chatContent = chatPanel.transform.Find("Content") ?? chatPanel.transform;
+            
+            if (chatContent.childCount > 0)
+            {
+                Transform lastMessageTransform = chatContent.GetChild(chatContent.childCount - 1);
+                GameObject messageUI = lastMessageTransform.gameObject;
+                
+                CustomMessageUI customStyle = messageUI.GetComponent<CustomMessageUI>();
+                if (customStyle == null)
+                {
+                    customStyle = messageUI.AddComponent<CustomMessageUI>();
+                }
+                customStyle.StyleMessage(message, isUser);
+            }
         }
     }
 }
