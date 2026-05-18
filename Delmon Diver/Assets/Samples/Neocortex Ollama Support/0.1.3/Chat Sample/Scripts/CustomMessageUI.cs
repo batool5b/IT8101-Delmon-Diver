@@ -4,20 +4,18 @@ using TMPro;
 
 namespace Neocortex.Samples
 {
-    /// <summary>
-    /// Custom message UI override for styling chat messages
-    /// Customizes:
-    /// 1. Removes background color
-    /// 2. Changes text color based on user/agent
-    /// 3. Aligns messages to the left
-    /// 4. Adds "[AlHaetham]" prefix for user messages
-    /// 5. Adds "[Balbol]" prefix for agent messages
-    /// </summary>
     public class CustomMessageUI : MonoBehaviour
     {
-        [SerializeField] private Color userTextColor = Color.blue;
-        [SerializeField] private Color agentTextColor = Color.green;
-        
+        // USER = Dark Brown
+        [SerializeField]
+        private Color userMessageColor =
+            new Color(0.478f, 0.306f, 0.157f); // #7A4E28
+
+        // AGENT = Parchment
+        [SerializeField]
+        private Color agentMessageColor =
+            new Color(0.910f, 0.835f, 0.710f); // #E8D5B5
+
         private Text textComponent;
         private TextMeshProUGUI tmpTextComponent;
         private Image backgroundImage;
@@ -26,58 +24,78 @@ namespace Neocortex.Samples
 
         private void Awake()
         {
-            // Get the text component (could be Text or TextMeshPro)
-            textComponent = GetComponentInChildren<Text>();
-            tmpTextComponent = GetComponentInChildren<TextMeshProUGUI>();
-            
-            // Get the background image (the parent container)
+            // Get text components
+            textComponent = GetComponentInChildren<Text>(true);
+            tmpTextComponent = GetComponentInChildren<TextMeshProUGUI>(true);
+
+            // Get background image
             backgroundImage = transform.parent?.GetComponent<Image>();
-            
+
             // Get layout components
             layoutElement = GetComponent<LayoutElement>();
             horizontalLayoutGroup = transform.parent?.GetComponent<HorizontalLayoutGroup>();
+
+            // Remove background visibility
+            if (backgroundImage != null)
+            {
+                backgroundImage.color = Color.clear;
+            }
         }
 
         /// <summary>
-        /// Style the message based on whether it's from user or agent
+        /// Style the message based on sender
         /// </summary>
         public void StyleMessage(string message, bool isUser)
         {
-            // 1. Remove background color
+            // Remove background color
             if (backgroundImage != null)
             {
                 Color bgColor = backgroundImage.color;
-                bgColor.a = 0; // Make transparent
+                bgColor.a = 0f;
                 backgroundImage.color = bgColor;
             }
 
-            // 4 & 5. Add prefix based on sender
-            string displayText = message;
-            if (isUser)
-            {
-                displayText = "[AlHaetham] " + message;
-            }
-            else
-            {
-                displayText = "[Balbol] " + message;
-            }
+            // Add sender prefix
+            string displayText = isUser
+                ? "[AlHaetham] " + message
+                : "[Balbol] " + message;
 
-            // Set text and color
+            // Apply to legacy Text
             if (textComponent != null)
             {
                 textComponent.text = displayText;
-                textComponent.color = isUser ? userTextColor : agentTextColor;
-            }
-            else if (tmpTextComponent != null)
-            {
-                tmpTextComponent.text = displayText;
-                tmpTextComponent.color = isUser ? userTextColor : agentTextColor;
+
+                textComponent.color = isUser
+                    ? userMessageColor
+                    : agentMessageColor;
             }
 
-            // 3. Align to left
+            // Apply to TextMeshPro
+            if (tmpTextComponent != null)
+            {
+                tmpTextComponent.text = displayText;
+
+                tmpTextComponent.color = isUser
+                    ? userMessageColor
+                    : agentMessageColor;
+
+                // Force alignment
+                tmpTextComponent.alignment = TextAlignmentOptions.TopLeft;
+
+                // Better readability
+                tmpTextComponent.enableWordWrapping = true;
+            }
+
+            // Align layout left
             if (horizontalLayoutGroup != null)
             {
                 horizontalLayoutGroup.childAlignment = TextAnchor.MiddleLeft;
+            }
+
+            // Flexible width
+            if (layoutElement != null)
+            {
+                layoutElement.flexibleWidth = 1;
             }
         }
     }

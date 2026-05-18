@@ -327,7 +327,6 @@ GameObject:
   - component: {fileID: 5400566044866061100}
   - component: {fileID: 143266864045829442}
   - component: {fileID: 2318628846835637774}
-  - component: {fileID: 4590888507415321659}
   m_Layer: 5
   m_Name: Message
   m_TagString: Untagged
@@ -420,17 +419,3 @@ MonoBehaviour:
   layoutGroup: {fileID: 5400566044866061100}
   leftPadding: {fileID: 728810725897254649}
   rightPadding: {fileID: 3353177696224937899}
---- !u!114 &4590888507415321659
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6508075277312644823}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5adb384fd5b878a43b49cf41498c998a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  userTextColor: {r: 0.5450981, g: 0.2705882, b: 0.07450981, a: 1}
-  agentTextColor: {r: 0, g: 0, b: 0, a: 1}
