@@ -167,7 +167,7 @@ Transform:
   m_GameObject: {fileID: 167009218}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -148, y: 0, z: 50}
+  m_LocalPosition: {x: -266, y: 0, z: 125}
   m_LocalScale: {x: 1, y: 1, z: 250}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -187,7 +187,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextSceneName: L4_MainIsland
   levelCompletePanel: {fileID: 394351067}
-  delayBeforeLoad: 2
+  delayBeforeLoad: 4
 --- !u!1 &184271917
 GameObject:
   m_ObjectHideFlags: 0
@@ -276,7 +276,7 @@ Transform:
   m_GameObject: {fileID: 184271917}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1244, y: 0, z: -1200}
+  m_LocalPosition: {x: -1267, y: 0, z: -1200}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -473,7 +473,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColor: {r: 0.35686275, g: 0.16862746, b: 0.16862746, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
