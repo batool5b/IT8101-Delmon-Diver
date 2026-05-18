@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 3
   tags:
   - Island
+  - Obstacle
+  - SeaCreature
   layers:
   - Default
   - TransparentFX
