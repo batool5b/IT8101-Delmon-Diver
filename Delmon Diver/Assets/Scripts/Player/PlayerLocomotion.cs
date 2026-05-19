@@ -26,6 +26,7 @@ public class PlayerLocomotion : MonoBehaviour
     [Header("Jump / SwimUp")]
     public float jumpForce   = 5f;      // land jump impulse
     public float swimUpForce = 3f;      // rise-to-surface impulse
+    public float swimDownForce = 3f;    // dive-down impulse in water
 
     // ── Private state ─────────────────────────────────────────────────
     private bool hasDived = false;      // prevents dive firing every frame
@@ -53,13 +54,16 @@ public class PlayerLocomotion : MonoBehaviour
     {
         if (env == null) return;
 
-        // Switch drag so water feels like water
-        UpdateDrag();
+        // Swim if in water AND not grounded (or submerged)
+        // If grounded in shallow water, walk instead of swim so player can walk up slopes/beach!
+        bool shouldSwim = env.isInWater && (!env.isGrounded || env.isSubmerged);
 
-        if (env.isInWater)
+        // Switch drag and gravity so water feels like water
+        UpdateDrag(shouldSwim);
+
+        if (shouldSwim)
         {
             HandleSwimMovement();
-            HandleSwimUp();
         }
         else
         {
@@ -105,28 +109,41 @@ public class PlayerLocomotion : MonoBehaviour
         playerRigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
     }
 
-    // ── WATER ─────────────────────────────────────────────────────────
     private void HandleSwimMovement()
     {
-        if (inputManager.moveAmount <= 0f) return;  // let drag slow us
-
         Vector3 dir = GetFlatCameraDirection();
-        float   spd = inputManager.isRunning ? swimRunSpeed : swimSpeed;
+        float xzSpeed = inputManager.isRunning ? swimRunSpeed : swimSpeed;
 
-        float yVel = playerRigidbody.linearVelocity.y;
+        // Determine vertical speed
+        float targetYVelocity = 0f;
 
-        // At the water surface, prevent sinking unless player holds Dive (LCtrl)
-        if (!env.isSubmerged && !inputManager.diveInput)
-            yVel = Mathf.Max(yVel, 0f);
+        if (inputManager.jumpSwimUpInput)
+        {
+            // Swim Up
+            targetYVelocity = swimUpForce;
+        }
+        else if (inputManager.diveInput)
+        {
+            // Swim Down (Dive)
+            targetYVelocity = -swimDownForce;
+        }
+        else
+        {
+            // Hold vertical position (neutral buoyancy)
+            targetYVelocity = 0f;
+        }
 
-        playerRigidbody.linearVelocity = new Vector3(dir.x * spd, yVel, dir.z * spd);
-    }
+        // Horizontal velocity
+        float moveX = 0f;
+        float moveZ = 0f;
 
-    private void HandleSwimUp()
-    {
-        // Space in water = push upward toward surface
-        if (!inputManager.jumpSwimUpInput) return;
-        playerRigidbody.AddForce(Vector3.up * swimUpForce, ForceMode.Impulse);
+        if (inputManager.moveAmount > 0f)
+        {
+            moveX = dir.x * xzSpeed;
+            moveZ = dir.z * xzSpeed;
+        }
+
+        playerRigidbody.linearVelocity = new Vector3(moveX, targetYVelocity, moveZ);
     }
 
     // ── RUN OFF EDGE → DIVE ───────────────────────────────────────────
@@ -172,8 +189,9 @@ public class PlayerLocomotion : MonoBehaviour
     }
 
     // Switch Rigidbody drag: high in water (resistance), zero on land
-    private void UpdateDrag()
+    private void UpdateDrag(bool shouldSwim)
     {
-        playerRigidbody.linearDamping = env.isInWater ? waterDrag : normalDrag;
+        playerRigidbody.linearDamping = shouldSwim ? waterDrag : normalDrag;
+        playerRigidbody.useGravity = !shouldSwim; // Turn off gravity in water for neutral buoyancy
     }
 }

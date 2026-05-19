@@ -15,9 +15,12 @@ public class InputManagement : MonoBehaviour
     [HideInInspector] public bool isRunning;        // Left Shift held
     [HideInInspector] public bool jumpSwimUpInput;  // Space held
     [HideInInspector] public bool diveInput;        // Left Ctrl held
+    [HideInInspector] public bool interactInput;    // E key — pick up / talk
+    [HideInInspector] public bool useToolInput;     // F key — use equipped tool
 
     // ── OUTPUT: read by ThirdPersonCameraController ────────────────────
     private Vector2 lookInput;
+    [HideInInspector] public bool isLookInputFromMouse = true;
 
     // ── INTERNAL ──────────────────────────────────────────────────────
     private PlayerInputActions playerInputActions;  // auto-generated from .inputactions file
@@ -25,14 +28,20 @@ public class InputManagement : MonoBehaviour
 
     private void Awake()
     {
-        // Create the input actions object (generated from PlayerInputActions.inputactions)
-        playerInputActions = new PlayerInputActions();
+        InitInputActions();
+    }
+
+    private void InitInputActions()
+    {
+        if (playerInputActions == null)
+            playerInputActions = new PlayerInputActions();
     }
 
     // OnEnable/OnDisable: subscribe/unsubscribe to input events
     // This is the correct pattern — never subscribe in Awake or Start
     private void OnEnable()
     {
+        InitInputActions();
         playerInputActions.PlayerMovement.Enable();
 
         // performed = key pressed or axis moved
@@ -45,24 +54,37 @@ public class InputManagement : MonoBehaviour
         playerInputActions.PlayerMovement.JumpSwimUp.canceled += OnJumpSwimUp;
         playerInputActions.PlayerMovement.Dive.performed += OnDive;
         playerInputActions.PlayerMovement.Dive.canceled += OnDive;
+
+        playerInputActions.PlayerMovement.Interact.performed += OnInteract;
+        playerInputActions.PlayerMovement.Interact.canceled += OnInteract;
+        playerInputActions.PlayerMovement.UseTool.performed += OnUseTool;
+        playerInputActions.PlayerMovement.UseTool.canceled += OnUseTool;
         playerInputActions.PlayerMovement.Look.performed += OnLook;
         playerInputActions.PlayerMovement.Look.canceled += OnLook;
     }
 
     private void OnDisable()
     {
-        // Always unsubscribe to avoid memory leaks
-        playerInputActions.PlayerMovement.Move.performed -= OnMove;
-        playerInputActions.PlayerMovement.Move.canceled -= OnMove;
-        playerInputActions.PlayerMovement.Run.performed -= OnRun;
-        playerInputActions.PlayerMovement.Run.canceled -= OnRun;
-        playerInputActions.PlayerMovement.JumpSwimUp.performed -= OnJumpSwimUp;
-        playerInputActions.PlayerMovement.JumpSwimUp.canceled -= OnJumpSwimUp;
-        playerInputActions.PlayerMovement.Dive.performed -= OnDive;
-        playerInputActions.PlayerMovement.Dive.canceled -= OnDive;
-        playerInputActions.PlayerMovement.Look.performed -= OnLook;
-        playerInputActions.PlayerMovement.Look.canceled -= OnLook;
-        playerInputActions.PlayerMovement.Disable();
+        if (playerInputActions != null)
+        {
+            // Always unsubscribe to avoid memory leaks
+            playerInputActions.PlayerMovement.Move.performed -= OnMove;
+            playerInputActions.PlayerMovement.Move.canceled -= OnMove;
+            playerInputActions.PlayerMovement.Run.performed -= OnRun;
+            playerInputActions.PlayerMovement.Run.canceled -= OnRun;
+            playerInputActions.PlayerMovement.JumpSwimUp.performed -= OnJumpSwimUp;
+            playerInputActions.PlayerMovement.JumpSwimUp.canceled -= OnJumpSwimUp;
+            playerInputActions.PlayerMovement.Dive.performed -= OnDive;
+            playerInputActions.PlayerMovement.Dive.canceled -= OnDive;
+
+            playerInputActions.PlayerMovement.Interact.performed -= OnInteract;
+            playerInputActions.PlayerMovement.Interact.canceled -= OnInteract;
+            playerInputActions.PlayerMovement.UseTool.performed -= OnUseTool;
+            playerInputActions.PlayerMovement.UseTool.canceled -= OnUseTool;
+            playerInputActions.PlayerMovement.Look.performed -= OnLook;
+            playerInputActions.PlayerMovement.Look.canceled -= OnLook;
+            playerInputActions.PlayerMovement.Disable();
+        }
     }
 
     // These are called automatically by the Input System when keys change
@@ -79,14 +101,28 @@ public class InputManagement : MonoBehaviour
     private void OnDive(InputAction.CallbackContext ctx)
         => diveInput = ctx.ReadValueAsButton();        // true while LCtrl is held
 
+    private void OnInteract(InputAction.CallbackContext ctx)
+        => interactInput = ctx.ReadValueAsButton();  // true while E is held
+
     private void OnLook(InputAction.CallbackContext ctx)
-    => lookInput = ctx.ReadValue<Vector2>();
+    {
+        lookInput = ctx.ReadValue<Vector2>();
+        isLookInputFromMouse = ctx.control.device is Mouse;
+    }
+
+    private void OnUseTool(InputAction.CallbackContext ctx)
+        => useToolInput = ctx.ReadValueAsButton();   // true while F is held
 
     /// <summary>
     /// Get the camera look input (left/right rotation).
     /// Called by ThirdPersonCameraController.
     /// </summary>
     public Vector2 GetLookInput() => lookInput;
+
+    public void ResetLookInput()
+    {
+        lookInput = Vector2.zero;
+    }
 
     /// <summary>
     /// Called every Update by PlayerManager.
