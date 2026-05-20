@@ -3,113 +3,89 @@ using UnityEngine;
 public class SeaCreatureAroundBoat : MonoBehaviour
 {
     [Header("Boat")]
-    public Transform boat; //drag the boat here
+    public Transform boat;
 
     [Header("UI")]
-    public GameObject dangerText; //drag danger text here
+    public DangerUI dangerUI; 
 
     [Header("Detection")]
-    public float appearDistance = 60f; //boat close enough to activate
-    public float stopDistance = 90f; //boat far enough to stop
+    public float appearDistance = 60f;
+    public float stopDistance = 90f;
 
-    [Header("Circle In Same Area")]
-    public float circleRadius = 10f; //circle size around original position
-    public float circleSpeed = 2f; //circle speed
-    public float moveSpeed = 8f; //movement smoothness
+    [Header("Circle In Front Of Boat")]
+    public float circleRadius = 10f;
+    public float circleSpeed = 2f;
+    public float moveSpeed = 8f;
+    public float distanceInFront = 15f; 
 
     [Header("Height")]
     public bool useStartY = true;
-    public float customY = 1.2f; //use this if creature is too high/low
+    public float customY = 1.2f;
 
-    private Vector3 startPosition; //original creature position
-    private Vector3 circleCenter;  //center of the circle
+    [Header("Rotation")]
+    public bool rotateWithMovement = false;
+    public bool yAxisOnly = true;
+
+    private Vector3 startPosition;
+    private Quaternion startRotation;
     private float circleY;
+    private Vector3 circleCenter;
     private float angle = 0f;
     private bool isCircling = false;
 
     void Start()
     {
-        //save original creature position
         startPosition = transform.position;
-
-        //circle will stay around this same original position
+        startRotation = transform.rotation;
         circleY = useStartY ? startPosition.y : customY;
-
-        circleCenter = new Vector3(
-            startPosition.x,
-            circleY,
-            startPosition.z
-        );
-
-        if (dangerText != null)
-            dangerText.SetActive(false);
-
-        Debug.Log("Sea creature circle center: " + circleCenter);
+        Debug.Log("Sea creature ready to circle in front of boat!");
     }
 
     void Update()
     {
-        if (boat == null)
-        {
-            Debug.LogWarning("Boat is not assigned!");
+        if (boat == null || dangerUI == null)
             return;
-        }
 
-        //check distance between boat and creature area using X/Z only
-        float distance = Vector2.Distance(
-            new Vector2(circleCenter.x, circleCenter.z),
-            new Vector2(boat.position.x, boat.position.z)
+        float distance = Vector3.Distance(
+            new Vector3(transform.position.x, 0, transform.position.z),
+            new Vector3(boat.position.x, 0, boat.position.z)
         );
 
-        //boat near creature area
         if (!isCircling && distance <= appearDistance)
-        {
             StartCircling();
-        }
 
-        //boat far from creature area
         if (isCircling && distance >= stopDistance)
-        {
             StopCircling();
-        }
 
         if (isCircling)
-        {
-            CircleInSamePlace();
-        }
+            CircleInFrontOfBoat();
     }
 
     void StartCircling()
     {
         isCircling = true;
-
-        if (dangerText != null)
-            dangerText.SetActive(true);
-
-        Debug.Log("DANGER! Creature is circling in its area.");
+        Vector3 boatForward = boat.forward;
+        circleCenter = boat.position + boatForward * distanceInFront;
+        circleCenter.y = circleY;
+        angle = 0f;
+        dangerUI.ShowDanger();
     }
 
     void StopCircling()
     {
         isCircling = false;
-
-        if (dangerText != null)
-            dangerText.SetActive(false);
-
-        //return to original position
+        dangerUI.HideDanger();
         transform.position = startPosition;
-
-        Debug.Log("Creature stopped circling.");
+        transform.rotation = startRotation;
     }
 
-    void CircleInSamePlace()
+    void CircleInFrontOfBoat()
     {
         angle += circleSpeed * Time.deltaTime;
 
         float x = Mathf.Cos(angle) * circleRadius;
         float z = Mathf.Sin(angle) * circleRadius;
 
-        //circle around original position, NOT around the boat
         Vector3 targetPosition = new Vector3(
             circleCenter.x + x,
             circleY,
@@ -122,18 +98,21 @@ public class SeaCreatureAroundBoat : MonoBehaviour
             moveSpeed * Time.deltaTime
         );
 
-        //face movement direction
-        Vector3 direction = targetPosition - transform.position;
-
-        if (direction != Vector3.zero)
+        if (!rotateWithMovement)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = startRotation;
+            return;
+        }
 
-            transform.rotation = Quaternion.Slerp(
-                transform.rotation,
-                targetRotation,
-                5f * Time.deltaTime
-            );
+        if (yAxisOnly)
+        {
+            Vector3 direction = targetPosition - transform.position;
+            if (direction != Vector3.zero)
+            {
+                float targetY = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+                Quaternion targetRotation = Quaternion.Euler(startRotation.eulerAngles.x, targetY, startRotation.eulerAngles.z);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5f * Time.deltaTime);
+            }
         }
     }
 }

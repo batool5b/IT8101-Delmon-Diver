@@ -6244,14 +6244,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boat: {fileID: 1738238817}
-  dangerText: {fileID: 1346800965}
+  dangerUI: {fileID: 1844350600}
   appearDistance: 20
   stopDistance: 90
   circleRadius: 6
   circleSpeed: 2
   moveSpeed: 4
+  distanceInFront: 15
   useStartY: 1
   customY: 1.2
+  rotateWithMovement: 0
+  yAxisOnly: 1
 --- !u!1 &1225203487
 GameObject:
   m_ObjectHideFlags: 0
@@ -6390,7 +6393,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1346800966
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6430,7 +6433,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a13d320c7de8bd4aa67e589988cedfa, type: 2}
   m_sharedMaterial: {fileID: -3116260153501643722, guid: 6a13d320c7de8bd4aa67e589988cedfa, type: 2}
@@ -6860,14 +6863,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boat: {fileID: 1738238817}
-  dangerText: {fileID: 1346800965}
+  dangerUI: {fileID: 1844350600}
   appearDistance: 20
   stopDistance: 90
   circleRadius: 6
   circleSpeed: 2
   moveSpeed: 4
+  distanceInFront: 15
   useStartY: 1
   customY: 1.2
+  rotateWithMovement: 0
+  yAxisOnly: 1
 --- !u!1 &1666390191
 GameObject:
   m_ObjectHideFlags: 0
