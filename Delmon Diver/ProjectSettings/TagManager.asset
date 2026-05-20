@@ -7,11 +7,12 @@ TagManager:
   - Island
   - Obstacle
   - SeaCreature
+  - 'Water '
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
   - 
